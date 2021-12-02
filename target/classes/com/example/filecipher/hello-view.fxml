@@ -61,7 +61,7 @@
                         <PasswordField fx:id="decipherPassConfirmed" layoutX="202.0" layoutY="173.0" promptText="Confirmar contraseña" />
                         <Button layoutX="250.0" layoutY="261.0" mnemonicParsing="false" onAction="#decipherBtnPressed" prefWidth="99.0" text="Descifrar">
                            <font>
-                              <Font name="Roboto Bold" size="12.0" />
+                              <Font name="Roboto Bold" size="24.0" />
                            </font>
                         </Button>
                      </children>
