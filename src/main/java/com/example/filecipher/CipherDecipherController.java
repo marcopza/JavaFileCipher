@@ -16,6 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -99,17 +100,19 @@ public class CipherDecipherController {
         decipherPassConfirmed.setText("");
     }
 
-    private void encryptDecrypt(File toEncrypt, String password, int type) {
+    private void encryptDecrypt(File toEncDec, String password, int type) {
         try {
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream(toEncrypt));
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(toEncDec));
             BufferedOutputStream out;
             File toOut = null;
             if (type == Cipher.ENCRYPT_MODE){
                 toOut = new File("encrypted.txt");
-                out = new BufferedOutputStream(new FileOutputStream(toOut));
+                calculateWriteSHA1(toOut, toEncDec);
+                out = new BufferedOutputStream(new FileOutputStream(toOut, true));
             }else{
                 toOut = new File("decrypted.txt");
                 out = new BufferedOutputStream(new FileOutputStream(toOut));
+                in.readNBytes(20);
             }
             SecretKeyFactory kf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] salt = new byte[20];
@@ -131,6 +134,24 @@ public class CipherDecipherController {
             in.close();
             Runtime.getRuntime().exec("explorer.exe /select," + toOut.getAbsolutePath());
             out.close();
+            if (type == Cipher.DECRYPT_MODE) {
+                boolean result = calculateCompareSHA1(toEncDec, toOut);
+                if(!result) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error");
+                    alert.setContentText("Los hashes no corresponden.");
+                    alert.showAndWait();
+                    cleanFields();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmación");
+                    alert.setHeaderText("Confirmación");
+                    alert.setContentText("Los hashes corresponden.");
+                    alert.showAndWait();
+                    cleanFields();
+                }
+            }
             cleanFields();
         }catch (FileNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -145,12 +166,39 @@ public class CipherDecipherController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error");
-            alert.setContentText("Error al cifrar.");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
             cleanFields();
+            e.printStackTrace();
         }
+    }
 
+    private void calculateWriteSHA1 (File toOut, File input) throws NoSuchAlgorithmException, IOException {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(input));
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(toOut));
+        sha1.update(in.readAllBytes());
+        out.write(sha1.digest());
+        in.close();
+        out.close();
+    }
+
+    private boolean calculateCompareSHA1 (File encrypted, File decrypted) throws NoSuchAlgorithmException, IOException {
+        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(encrypted));
+        BufferedInputStream in2 = new BufferedInputStream(new FileInputStream(decrypted));
+        byte[] original = in.readNBytes(20);
+        sha1.update(in2.readAllBytes());
+        in.close();
+        in2.close();
+        byte[] result = sha1.digest();
+        boolean equals = true;
+        for (int i = 0; i < result.length; i++) {
+            if(result[i] != original[i]) {
+                equals = false;
+            }
+        }
+        return equals;
     }
 
 }
