@@ -3,7 +3,6 @@
 ## Dificultades presentadas
 A continuación, se presentan el listado de las dificultades que surgieron en la realización del cifrador y descifrador de archivos utilizando Java. Cabe recalcar, que para el análisis de estas dificultades también fue considerado el proceso de desarrollo en términos de la estructuración del equipo. 
 
-Ordered
 
 1.	**Problemas en la sincronización de horarios:** Aunque la organización y estructuración, así como la división de tareas del equipo fue eficiente, se presentaron conflictos para coordinar reuniones síncronas de los 3 miembros del equipo. Estos conflictos de horarios retrasaron el trabajo y fue necesario utilizar horarios no habituales para las reuniones.
 2.	**Problemas con el algoritmo de cifrado SHA-1:** Intentando utilizar el algoritmo de cifrado SHA-1 se presentaron errores pues la aplicación no funcionaba correctamente. Estos problemas fueron solucionados, en gran medida, cuando se descubrió que los 20 primeros bytes del archivo cifrado son utilizados para guardar la información de la clave de verificación del algoritmo.
