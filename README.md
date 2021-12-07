@@ -1,5 +1,5 @@
 ﻿# JavaFileCipher
-# Reporte final
+# Informe final
 ## Dificultades presentadas
 A continuación, se presentan el listado de las dificultades que surgieron en la realización del cifrador y descifrador de archivos utilizando Java. Cabe recalcar, que para el análisis de estas dificultades también fue considerado el proceso de desarrollo en términos de la estructuración del equipo. 
 
