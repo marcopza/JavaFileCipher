@@ -40,7 +40,16 @@ public class CipherDecipherController {
 
     @FXML
     private PasswordField decipherPassConfirmed;
+    
+    /**
 
+     * This method starts the encryption of a file. Verify that the passwords are considered and that they are not null.
+     
+     * If the verification is unsuccessful, it displays an alarm.
+
+     * @param event press button "Cifrar" on the screen.
+
+     */
     @FXML
     void cipherBtnPressed(ActionEvent event) {
         if ((cipherPass.getText().equals(cipherPassConfirm.getText()) && !cipherPass.getText().equals(""))) {
@@ -51,6 +60,15 @@ public class CipherDecipherController {
         }
     }
 
+    /**
+
+     * This method starts the decryption of a file. Verify that the passwords are considered and that they are not null
+
+     * If the verification is unsuccessful, it displays an alarm.
+
+     * @param event press button "Decifrar" on the screen.
+
+     */
     @FXML
     void decipherBtnPressed(ActionEvent event) {
         if ((decipherPass.getText().equals(decipherPassConfirmed.getText()) && !decipherPass.getText().equals(""))) {
@@ -61,6 +79,13 @@ public class CipherDecipherController {
         }
     }
 
+    /**
+
+     * This method opens the device's file browser to find a file to manipulate.
+
+     * @param event press button "encontrar" on the screen
+
+     */
     @FXML
     void findCipherBtnPressed(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -70,6 +95,13 @@ public class CipherDecipherController {
         cipherFileAddress.setText(file.getAbsolutePath());
     }
 
+    /**
+
+     * This method opens the device's file browser to find a file to manipulate.
+
+     * @param event press button "encontrar" on the screen
+
+     */
     @FXML
     void findDecipherBtnPressed(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -79,6 +111,12 @@ public class CipherDecipherController {
         decipherFileAddress.setText(file.getAbsolutePath());
     }
 
+  
+    /**
+
+     * This method displays a pop-up window when any exception of the program is thrown.
+
+     */
     private void showAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -87,6 +125,11 @@ public class CipherDecipherController {
         cleanFields();
     }
 
+    /**
+
+     * This method clears the fields of the view.
+
+     */
     private void cleanFields() {
 
         // Cifrar
@@ -100,6 +143,17 @@ public class CipherDecipherController {
         decipherPassConfirmed.setText("");
     }
 
+    /**
+
+     * This method is the file encryptor and decrypter, where according to its the way in which it creates a file encrypted.txt or decrypted.txt.
+
+     * @param toEncDec It is the file to be encrypted or encrypted, depending on the mode.
+     
+     * @param password It is the password that the user chooses to carry out the encryption.
+     
+     * @param type is the mode that the ENCRYPT_MODE or DECRYPT_MODE method is in.
+
+     */
     private void encryptDecrypt(File toEncDec, String password, int type) {
         try {
             BufferedInputStream in = new BufferedInputStream(new FileInputStream(toEncDec));
@@ -173,6 +227,15 @@ public class CipherDecipherController {
         }
     }
 
+    /**
+
+     * This method receives a file to calculate its hash and write it to a new file.
+
+     * @param toOut is the blank encrypted.txt file to pass through the SHA-1 hash.
+     
+     * @param input is the original file to calculate the hash.
+
+     */
     private void calculateWriteSHA1 (File toOut, File input) throws NoSuchAlgorithmException, IOException {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(input));
@@ -183,6 +246,15 @@ public class CipherDecipherController {
         out.close();
     }
 
+    /**
+
+     * This method so that the hashed key of the encrypted file and the supplied key match.
+
+     * @param encrypted It is the encrypted file.
+     
+     * @param decrypted It is the key to compare.
+
+     */
     private boolean calculateCompareSHA1 (File encrypted, File decrypted) throws NoSuchAlgorithmException, IOException {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(encrypted));
