@@ -3,9 +3,12 @@
 
 ## Funcionamiento del programa 
 Para realizar este proyecto usamos Java para la lógica del programa y JavaFX para la interfaz que interactúa con el usuario. También usamos algunas librerías como: `javax.crypto`, `java.io` y `java.security`.
+
 El software tiene un funcionamiento simple, donde pide al usuario que escoja un archivo para encriptar y una clave de encriptación con confirmación, generando un archivo “encrypted.txt”, Esto en el caso de querer encriptar un archivo. Para realizar una desencriptación el proceso es el mismo, seleccionar el archivo que se encuentra encriptado y proporcionar la clave con la que se encripto, el programa genera un archivo ”decrypted.txt” con la información.
+
 El programa lo primero que realizar es una verificación de que las claves suministradas coincidan o no sean nulas, dado el caso, lanza una alarma al usuario. Después de esto, lo siguiente será crear o traer el archivo con la ruta que dio el usuario. Según el caso, el software creara un archivo de encriptación o desencriptación. 
 Para la encriptación, el programa calcula el hash para el archivo original y lo escribe en el archivo de encriptación. Posterior a esto, se utiliza la clave del usuario y un factor especial de llave "PBKDF2WithHmacSHA1" para crear una clave secreta de 128 bits, la cual, en conjunto con el cifrado AES y un vector de inicialización, generan la clave con la cual se encriptara el archivo. donde los primeros 20 bits del archivo son de la clave.
+
 Para desencriptar es un proceso similar, usando el archivo encriptado y la contraseña del usuario. Solo que, al iniciar, se extraen los primeros 20 bits que son la llave especial. También se realiza una verificación de la clave del usuario y la que se encuentra en los primeros 20 bits, corroborando que se puede desencriptar exitosamente el archivo.
 
 
